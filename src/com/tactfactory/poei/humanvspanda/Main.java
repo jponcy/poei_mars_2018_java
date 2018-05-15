@@ -1,28 +1,52 @@
 package com.tactfactory.poei.humanvspanda;
 
+import java.util.LinkedList;
+import java.util.List;
 
 public class Main {
 
     /** Program entry point. */
     public static void main(String[] args) {
-        test(new Bad(), "400", "bad-request");
-        test(new Bad(), "404", "not-found");
-        test(new Bad(), "request", "bad");
-        test(new Worst(), "worst", "human-ever");
-        test(new Panda(), "Fromage", null);
-    }
+        List<Client> clients = new LinkedList<>();
 
-    private static void test(Client instance, String lastname, String firstname) {
-        if (instance instanceof Human) {
-            Human human = (Human) instance;
+        // Initialize client data.
+        String[][] names = new String[][]{
+            // 0        1
+            {"400",     "Bad request"   }, // 0
+            {"404",     "not-found"     }, // 1
+            {"request", "bad"           }, // 2
+            {"worst",   "human-ever"    }, // 3
+            {"Fromage", null            }  // 4
+        };
 
-            human.setFirstname(firstname);
-            human.setLastname(lastname);
-        } else { // Panda.
-            Panda panda = (Panda) instance;
-            panda.setName(lastname);
+        // Add clients.
+        for (int i = 0; i < names.length; ++i) {
+            String[] n = names[i];
+            Client newClient;
+
+            if (n[1] == null) { // Panda.
+                newClient = new Panda();
+                ((Panda) newClient).setName(n[0]);
+            } else { // Human.
+                String lastname = n[0];
+                String firstname = n[1];
+
+                if (firstname.toLowerCase().contains("bad")) {
+                    newClient = new Bad(lastname, firstname);
+                } else { // Worst is worse than bad.
+                    Worst w = new Worst();
+                    w.setFirstname(firstname);
+                    w.setLastname(lastname);
+                    newClient = w;
+                }
+            }
+
+            clients.add(newClient);
         }
 
-        System.out.println(instance.getName());
+        // Print names.
+        for (Client client : clients) {
+            System.out.println(client.getName());
+        }
     }
 }

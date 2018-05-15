@@ -10,4 +10,9 @@ public class Bad extends Human {
         this.setFirstname(firstname);
         this.setLastname(lastname);
     }
+
+    @Override
+    public String getName() {
+        return super.getName() + " => I'm a bad guy";
+    }
 }
