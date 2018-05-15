@@ -1,22 +1,20 @@
 package com.tactfactory.poei.humanvspanda;
 
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
 
     /** Program entry point. */
     public static void main(String[] args) {
-        List<Client> clients = new LinkedList<>();
-
-        // Add items.
-        clients.add(new Bad(    "400",      "Bad request"));
-        clients.add(new Worst(  "404",      "not-found"));
-        clients.add(new Bad(    "request",  "bad"));
-        clients.add(new Worst(  "worst",    "human-ever"));
-        clients.add(new Panda(  "Fromage"));
-
         // Print names.
+        List<Client> clients = Arrays.asList(
+                new Bad(    "400",      "Bad request"),
+                new Worst(  "404",      "not-found"),
+                new Bad(    "request",  "bad"),
+                new Worst(  "worst",    "human-ever"),
+                new Panda(  "Fromage"));
+
         for (Client client : clients) {
             System.out.println(client.getName());
         }
