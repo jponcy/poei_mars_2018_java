@@ -1,24 +1,31 @@
 package com.tactfactory.poei.humanvspanda;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
     /** Program entry point. */
     public static void main(String[] args) {
-        // Initialize.
-        List<Client> clients = Arrays.asList(
-                new Bad(    "400",      "Bad request"),
-                new Worst(  "404",      "not-found"),
-                new Bad(    "request",  "bad"),
-                new Worst(  "worst",    "human-ever"),
-                new Panda(  "Fromage"));
+        Scanner scan = new Scanner(System.in);
+        String line = scan.nextLine();
 
-        // Print names.
-        clients
+        // Initialize.
+        List<Integer> list = new ArrayList<>();
+
+        for (int i = 0; i < 10; ++ i) {
+            list.add(i);
+        }
+
+        demo(list);
+    }
+
+    private static void demo(List<Integer> list) {
+        list
             .stream()
-            .map(e -> e.getName())
+            .filter(e -> e % 2 == 0 && e > 0)
+            .map(item -> item * item)
             .forEach(System.out::println);
     }
 }
