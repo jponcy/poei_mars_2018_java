@@ -7,7 +7,7 @@ public class Main {
 
     /** Program entry point. */
     public static void main(String[] args) {
-        // Print names.
+        // Initialize.
         List<Client> clients = Arrays.asList(
                 new Bad(    "400",      "Bad request"),
                 new Worst(  "404",      "not-found"),
@@ -15,8 +15,10 @@ public class Main {
                 new Worst(  "worst",    "human-ever"),
                 new Panda(  "Fromage"));
 
-        for (Client client : clients) {
-            System.out.println(client.getName());
-        }
+        // Print names.
+        clients
+            .stream()
+            .map(e -> e.getName())
+            .forEach(System.out::println);
     }
 }
