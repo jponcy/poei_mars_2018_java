@@ -9,40 +9,12 @@ public class Main {
     public static void main(String[] args) {
         List<Client> clients = new LinkedList<>();
 
-        // Initialize client data.
-        String[][] names = new String[][]{
-            // 0        1
-            {"400",     "Bad request"   }, // 0
-            {"404",     "not-found"     }, // 1
-            {"request", "bad"           }, // 2
-            {"worst",   "human-ever"    }, // 3
-            {"Fromage", null            }  // 4
-        };
-
-        // Add clients.
-        for (int i = 0; i < names.length; ++i) {
-            String[] n = names[i];
-            Client newClient;
-
-            if (n[1] == null) { // Panda.
-                newClient = new Panda();
-                ((Panda) newClient).setName(n[0]);
-            } else { // Human.
-                String lastname = n[0];
-                String firstname = n[1];
-
-                if (firstname.toLowerCase().contains("bad")) {
-                    newClient = new Bad(lastname, firstname);
-                } else { // Worst is worse than bad.
-                    Worst w = new Worst();
-                    w.setFirstname(firstname);
-                    w.setLastname(lastname);
-                    newClient = w;
-                }
-            }
-
-            clients.add(newClient);
-        }
+        // Add items.
+        clients.add(new Bad(    "400",      "Bad request"));
+        clients.add(new Worst(  "404",      "not-found"));
+        clients.add(new Bad(    "request",  "bad"));
+        clients.add(new Worst(  "worst",    "human-ever"));
+        clients.add(new Panda(  "Fromage"));
 
         // Print names.
         for (Client client : clients) {
