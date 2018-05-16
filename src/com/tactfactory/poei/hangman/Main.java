@@ -1,6 +1,8 @@
 package com.tactfactory.poei.hangman;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -13,9 +15,13 @@ public class Main {
         int life = 5;
         boolean found = false;
         char[] state;
+        List<String> allTries;
 
         // Select the mystery word.
         String mystery = words[new Random().nextInt(words.length)];
+
+        // Initialize list of tries.
+        allTries = new ArrayList<>(mystery.length() + 4);
 
         // Initialize array state --- word with same size than mystery but with _ instead of letters.
         Arrays.fill(state = new char[mystery.length()], '_');
@@ -52,6 +58,10 @@ public class Main {
             // Wait correct try.
             while ("".equals((line = scan.nextLine().trim())));
 
+            if (allTries.contains(line)) continue;
+
+            allTries.add(line);
+
             if (line.length() == 1) { // If try letter.
                 char inputLetter = line.charAt(0); // The only one letter.
                 boolean letterFound = false;
@@ -69,6 +79,7 @@ public class Main {
                     for (int i = 0; i < state.length; ++ i) {
                         if (state[i] == '_') break;
                         else if (i == state.length - 1) {
+                            System.out.println(mystery);
                             found = true;
                         }
                     }
@@ -82,7 +93,6 @@ public class Main {
 
         scan.close();
 
-        System.out.println(String.valueOf(state));
         System.out.println("");
         System.out.println(found ? "Bravo !" : "... Le mot correct était \"" + mystery + "\" !");
     }
