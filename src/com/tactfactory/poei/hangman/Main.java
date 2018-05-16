@@ -1,17 +1,22 @@
 package com.tactfactory.poei.hangman;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Main {
 
     private static final String FILENAME = "resources/dico.txt";
+
+    private static Pattern pattern = Pattern.compile("/\\s([a-z-]+)/");
 
     @SuppressWarnings("resource")
     public static void main(String[] args) {
@@ -62,7 +67,6 @@ public class Main {
          */
 
         System.out.println("Essai de trouver le mot mistère, il est introuvable.");
-        System.out.println("Indice : " + mystery);
 
         do {
             System.out.println("");
@@ -73,6 +77,34 @@ public class Main {
 
             // Wait correct try.
             while ("".equals((line = scan.nextLine().trim())));
+
+            // Process commands.
+            if (line.startsWith("/")) {
+                if (line.startsWith("/add")) {
+                    try (BufferedWriter writter = new BufferedWriter(new FileWriter(FILENAME, true))) {
+                        String[] newWords = line.split(" ");
+
+                        for (int i = 1; i < newWords.length; ++i) {
+                            String word = newWords[i];
+
+                            if (!words.contains(word)) {
+                                writter.write(word);
+                                writter.newLine();
+                                words.add(word);
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        System.err.println("Impossible to write the word into dictionary!");
+                    }
+                } else if (line.startsWith("/solution")) {
+                    System.out.println("Léger indice, le mot est : " + mystery);
+                } else {
+                    System.err.println("Commande inexistante. Vous êtes stupide !");
+                }
+
+                continue;
+            }
 
             if (allTries.contains(line)) continue;
 
