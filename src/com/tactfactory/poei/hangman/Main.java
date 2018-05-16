@@ -51,7 +51,8 @@ public class Main {
 
         do {
             System.out.println("");
-            System.out.println(String.valueOf(state));
+            System.out.println("Déjà trouvé : " + String.valueOf(state));
+            System.out.println("Essais précédents : " + String.join(", ", allTries));
             // Print "question".
             System.out.println("Il vous reste " + life + " vie" + (life == 1 ? "" : "s") + " : ");
 
