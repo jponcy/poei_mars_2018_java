@@ -9,7 +9,8 @@ public class Main {
         String[] words = new String[] {"mistere", "introuvable", "securise", "fort", "toto", "viagra", "amidon"};
         Scanner scan = new Scanner(System.in);
         String line;
-        int run = 1;
+        int life = 5;
+        boolean found;
 
         // Select the mystery word.
         String mystery = words[new Random().nextInt(words.length)];
@@ -25,12 +26,18 @@ public class Main {
         */
         do {
             // Print "question".
-            System.out.println("Votre essai n°" + (run ++));
+            System.out.println("Il vous reste " + life + " vie" + (life == 1 ? "" : "s") + " : ");
 
             // Wait correct try.
             while ("".equals((line = scan.nextLine().trim())));
-        } while (!line.equals(mystery));
 
-        System.out.println("bravo");
+            if (!(found = line.equals(mystery))) {
+                -- life;
+            }
+        } while (!found && life > 0);
+
+        scan.close();
+
+        System.out.println(found ? "Bravo !" : "... Le mot correct était \"" + mystery + "\" !");
     }
 }
