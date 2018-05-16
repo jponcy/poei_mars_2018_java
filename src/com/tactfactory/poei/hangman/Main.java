@@ -1,5 +1,8 @@
 package com.tactfactory.poei.hangman;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,8 +11,11 @@ import java.util.Scanner;
 
 public class Main {
 
+    private static final String FILENAME = "resources/dico.txt";
+
+    @SuppressWarnings("resource")
     public static void main(String[] args) {
-        String[] words = new String[] {"mistere", "introuvable", "securise", "fort", "toto", "viagra", "amidon"};
+        List<String> words = new ArrayList<>();
         Scanner scan = new Scanner(System.in);
         String line;
         int life = 5;
@@ -17,8 +23,17 @@ public class Main {
         char[] state;
         List<String> allTries;
 
+        // Read words.
+        try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
+            while (br.ready()) words.add(br.readLine().trim());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Impossible to read dictionary!");
+            return;
+        }
+
         // Select the mystery word.
-        String mystery = words[new Random().nextInt(words.length)];
+        String mystery = words.get(new Random().nextInt(words.size())); //words[new Random().nextInt(words.length)];
 
         // Initialize list of tries.
         allTries = new ArrayList<>(mystery.length() + 4);
