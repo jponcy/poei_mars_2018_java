@@ -9,11 +9,12 @@ public class Main {
         String[] words = new String[] {"mistere", "introuvable", "securise", "fort", "toto", "viagra", "amidon"};
         Scanner scan = new Scanner(System.in);
         String line;
+        int run = 1;
 
         // Select the mystery word.
         String mystery = words[new Random().nextInt(words.length)];
 
-        System.out.println("Essai de trouver le mot mistère, il est introuvable : ");
+        System.out.println("Essai de trouver le mot mistère, il est introuvable.");
         System.out.println("Indice : " + mystery);
 
         /*
@@ -22,9 +23,14 @@ public class Main {
         } while ("".equals(line));
         // OR
         */
-        while ("".equals((line = scan.nextLine().trim())));
+        do {
+            // Print "question".
+            System.out.println("Votre essai n°" + (run ++));
 
-        System.out.println(line + (mystery.equals(line) ? " => bravo" : " n'est pas le mot \"mystère\", "
-                + "il fallait trouver \"" + mystery + "\""));
+            // Wait correct try.
+            while ("".equals((line = scan.nextLine().trim())));
+        } while (!line.equals(mystery));
+
+        System.out.println("bravo");
     }
 }
