@@ -1,6 +1,6 @@
 package com.tactfactory.poei.generic.log.base;
 
-public class Log <T extends Logger> implements Logger {
+public class Log <T extends Logger> {
     private T logger;
     private static Log instance;
 
@@ -17,21 +17,20 @@ public class Log <T extends Logger> implements Logger {
         }
     }
 
-    public static Log<?> instance() throws LoggerNotInitializedException {
+    @SuppressWarnings("all")
+    private static Log<?> instance() {
         if (instance == null) {
-            throw new LoggerNotInitializedException();
+            instance = new Log(new CLogger());
         }
 
         return instance;
     }
 
-    @Override
-    public void error(String msg) {
-        logger.error(msg);
+    public static void error(String msg) {
+        instance().logger.error(msg);
     }
 
-    @Override
-    public void info(String msg) {
-        logger.info(msg);
+    public static void info(String msg) {
+        instance().logger.info(msg);
     }
 }
