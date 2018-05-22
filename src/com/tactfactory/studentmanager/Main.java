@@ -1,25 +1,28 @@
 
 package com.tactfactory.studentmanager;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
-    private static List<Student> students = new LinkedList<>();
+    private static final StudentRepository repo = new StudentRepository();
+    private static Map<Integer, Integer> ids;
 
     public static void main(String[] args) {
         while (true) {
-            if (students.isEmpty()) {
+            ids = new HashMap<>();
+
+            if (repo.isEmpty()) {
                 System.out.println("Pas encore d'étudiants");
             } else {
-                Iterator<Student> it = students.iterator();
-                short counter = 0;
+                int counter = 0;
 
-                while (it.hasNext())
-                    System.out.println("" + (++ counter) + " - " + it.next());
+                for (Student student : repo.findAll()) {
+                    System.out.println("" + (++ counter) + " - " + student);
+                    ids.put(counter, student.getId());
+                }
             }
 
             System.out.println("\nQue voulez vous faire ?"
@@ -54,42 +57,46 @@ public class Main {
      * Call remove when we don't has students => infinite loop.
      */
     private static void removeStudent() {
-        int index = getNumberByIndex();
+        Integer index = getNumberByIndex();
 
-        students.remove(index);
+        if (index != null) repo.delete(index);
     }
 
     private static void updateStudent() {
-        int index = getNumberByIndex();
-        System.out.println("Modifions " + students.get(index));
-        students.set(index, fillStudent());
+        Integer index = getNumberByIndex();
+
+        if (index != null) {
+            Student student = repo.find(index);
+            System.out.println("Modifions " + student);
+            repo.update(fillStudent(student));
+        }
     }
 
     private static void addStudent() {
         Student student = fillStudent();
-        students.add(student);
+        repo.create(student);
     }
 
     private static Student fillStudent() {
-        String firstname;
-        String lastname;
-
+        return fillStudent(new Student());
+    }
+    private static Student fillStudent(Student student) {
         System.out.println("Nom ?");
         String name = read();
 
         String[] split = name.split(" ");
 
         if (split.length == 2) {
-            lastname = split[0];
-            firstname = split[1];
+            student.setLastname(split[0]);
+            student.setFirstname(split[1]);
         } else {
-            lastname = name;
+            student.setLastname(name);
 
             System.out.println("Prénom ?");
-            firstname = read();
+            student.setFirstname(read());
         }
 
-        return new Student(lastname, firstname);
+        return student;
     }
 
     private static String read() {
@@ -102,18 +109,18 @@ public class Main {
     /**
      * @return The `index -1` when index was fill by user.
      */
-    private static int getNumberByIndex() {
+    private static Integer getNumberByIndex() {
         System.out.println("Quel étudiants (numéro) ?");
         String givenIndex;
         int index;
 
         givenIndex = read();
         while (!givenIndex.matches("^\\d+$") ||
-                (index = Integer.parseInt(givenIndex)) <= 0 || index > students.size()) {
-            System.out.println("Merci de saisir un nombre compris entre " + 1 + " et " + students.size());
+                (index = Integer.parseInt(givenIndex)) <= 0 || index > repo.count()) {
+            System.out.println("Merci de saisir un nombre compris entre " + 1 + " et " + repo.count());
             givenIndex = read();
         }
 
-        return index - 1;
+        return ids.get(index);
     }
 }

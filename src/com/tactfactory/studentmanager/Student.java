@@ -3,6 +3,8 @@ package com.tactfactory.studentmanager;
 
 public class Student {
 
+    private Integer id;
+
     private String lastname;
 
     private String firstname;
@@ -23,6 +25,21 @@ public class Student {
         return this.firstname + " " + this.lastname;
     }
 
+    /**
+     * @return
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * @param id
+     * @return
+     */
+    public Student setId(Integer id) {
+        this.id = id;
+        return this;
+    }
     /** @return the lastname */
     public String getLastname() {
         return lastname;
