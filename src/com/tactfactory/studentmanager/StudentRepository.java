@@ -10,6 +10,10 @@ public class StudentRepository implements EntityRepository<Student> {
     private static final List<Student> students = new LinkedList<>();
     private static int size = 0;
 
+    /** Constructor only available for package. */
+    StudentRepository() {
+    }
+
     @Override
     public int count() {
         return size;

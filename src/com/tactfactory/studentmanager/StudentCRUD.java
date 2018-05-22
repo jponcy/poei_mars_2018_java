@@ -1,10 +1,13 @@
 
 package com.tactfactory.studentmanager;
 
+import com.tactfactory.studentmanager.repository.EntityManager;
+
 public class StudentCRUD extends CRUDStrategy<Student> {
 
+    @SuppressWarnings("unchecked")
     public StudentCRUD() {
-        super(new StudentRepository());
+        super((EntityRepository<Student>) EntityManager.getRepository(StudentRepository.class));
     }
 
     @Override
