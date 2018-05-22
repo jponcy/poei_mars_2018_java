@@ -8,5 +8,5 @@ public interface IOStream {
     void write(String msg);
 
     /** Read a string from input stream. */
-    String readString();
+    String read();
 }

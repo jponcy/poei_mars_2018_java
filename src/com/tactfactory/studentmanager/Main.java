@@ -3,38 +3,44 @@ package com.tactfactory.studentmanager;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
+
+import com.tactfactory.studentmanager.io.IOConsole;
+import com.tactfactory.studentmanager.io.IOStream;
 
 public class Main {
-    private static final Scanner scanner = new Scanner(System.in);
-    private static final StudentRepository repo = new StudentRepository();
-    private static Map<Integer, Integer> ids;
+
+    private final StudentRepository repo = new StudentRepository();
+    private Map<Integer, Integer> ids;
+    private IOStream io = new IOConsole();
 
     public static void main(String[] args) {
+        new Main().process();
+    }
+
+    private void process() {
         while (true) {
             ids = new HashMap<>();
 
             if (repo.isEmpty()) {
-                System.out.println("Pas encore d'étudiants");
+                this.io.write("Pas encore d'étudiants");
             } else {
                 int counter = 0;
 
                 for (Student student : repo.findAll()) {
-                    System.out.println("" + (++ counter) + " - " + student);
+                    this.io.write("" + (++ counter) + " - " + student);
                     ids.put(counter, student.getId());
                 }
             }
 
-            System.out.println("\nQue voulez vous faire ?"
+            this.io.write("\nQue voulez vous faire ?"
                     + "\n\t1) Ajouter un étudiants"
                     + "\n\t2) Modifier un étudiant"
                     + "\n\t3) Supprimer un étudiant"
                     + "\n\t0) Quitter");
 
-            switch (read()) {
+            switch (this.io.read()) {
                 case "0":
-                    scanner.close();
-                    System.out.println("Merci et à  bientôt !");
+                    this.io.write("Merci et à  bientôt !");
                     System.exit(0);
                     break;
                 case "1":
@@ -47,7 +53,7 @@ public class Main {
                     removeStudent();
                     break;
                 default:
-                    System.out.println("Quoi ?????");
+                    this.io.write("Quoi ?????");
                     break;
             }
         }
@@ -56,33 +62,33 @@ public class Main {
     /**
      * Call remove when we don't has students => infinite loop.
      */
-    private static void removeStudent() {
+    private void removeStudent() {
         Integer index = getNumberByIndex();
 
         if (index != null) repo.delete(index);
     }
 
-    private static void updateStudent() {
+    private void updateStudent() {
         Integer index = getNumberByIndex();
 
         if (index != null) {
             Student student = repo.find(index);
-            System.out.println("Modifions " + student);
+            this.io.write("Modifions " + student);
             repo.update(fillStudent(student));
         }
     }
 
-    private static void addStudent() {
+    private void addStudent() {
         Student student = fillStudent();
         repo.create(student);
     }
 
-    private static Student fillStudent() {
+    private Student fillStudent() {
         return fillStudent(new Student());
     }
-    private static Student fillStudent(Student student) {
-        System.out.println("Nom ?");
-        String name = read();
+    private Student fillStudent(Student student) {
+        this.io.write("Nom ?");
+        String name = this.io.read();
 
         String[] split = name.split(" ");
 
@@ -92,33 +98,26 @@ public class Main {
         } else {
             student.setLastname(name);
 
-            System.out.println("Prénom ?");
-            student.setFirstname(read());
+            this.io.write("Prénom ?");
+            student.setFirstname(this.io.read());
         }
 
         return student;
     }
 
-    private static String read() {
-        String result;
-        while ("".equals((result = scanner.nextLine().trim())));
-
-        return result;
-    }
-
     /**
      * @return The `index -1` when index was fill by user.
      */
-    private static Integer getNumberByIndex() {
-        System.out.println("Quel étudiants (numéro) ?");
+    private Integer getNumberByIndex() {
+        this.io.write("Quel étudiants (numéro) ?");
         String givenIndex;
         int index;
 
-        givenIndex = read();
+        givenIndex = this.io.read();
         while (!givenIndex.matches("^\\d+$") ||
                 (index = Integer.parseInt(givenIndex)) <= 0 || index > repo.count()) {
-            System.out.println("Merci de saisir un nombre compris entre " + 1 + " et " + repo.count());
-            givenIndex = read();
+            this.io.write("Merci de saisir un nombre compris entre " + 1 + " et " + repo.count());
+            givenIndex = this.io.read();
         }
 
         return ids.get(index);
