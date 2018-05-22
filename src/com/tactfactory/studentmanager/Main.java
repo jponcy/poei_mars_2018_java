@@ -54,13 +54,13 @@ public class Main {
      * Call remove when we don't has students => infinite loop.
      */
     private static void removeStudent() {
-        int id = getStudentByIndex();
+        int index = getNumberByIndex();
 
-        students.remove(id);
+        students.remove(index);
     }
 
     private static void updateStudent() {
-        int index = getStudentByIndex();
+        int index = getNumberByIndex();
         System.out.println("Modifions " + students.get(index));
         students.set(index, fillStudent());
     }
@@ -99,16 +99,21 @@ public class Main {
         return result;
     }
 
-    private static int getStudentByIndex() {
+    /**
+     * @return The `index -1` when index was fill by user.
+     */
+    private static int getNumberByIndex() {
         System.out.println("Quel étudiants (numéro) ?");
-        String givenId;
-        int id;
+        String givenIndex;
+        int index;
 
-        givenId = read();
-        while (!givenId.matches("^\\d+$") || (id = Integer.parseInt(givenId)) <= 0 || id > students.size()) {
+        givenIndex = read();
+        while (!givenIndex.matches("^\\d+$") ||
+                (index = Integer.parseInt(givenIndex)) <= 0 || index > students.size()) {
             System.out.println("Merci de saisir un nombre compris entre " + 1 + " et " + students.size());
-            givenId = read();
+            givenIndex = read();
         }
-        return id;
+
+        return index - 1;
     }
 }
