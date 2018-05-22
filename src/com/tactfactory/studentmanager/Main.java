@@ -50,15 +50,27 @@ public class Main {
         }
     }
 
+    /**
+     * Call remove when we don't has students => infinite loop.
+     */
     private static void removeStudent() {
-        // TODO Auto-generated method stub
+        int id = getStudentByIndex();
+
+        students.remove(id);
     }
 
     private static void updateStudent() {
-        // TODO Auto-generated method stub
+        int index = getStudentByIndex();
+        System.out.println("Modifions " + students.get(index));
+        students.set(index, fillStudent());
     }
 
     private static void addStudent() {
+        Student student = fillStudent();
+        students.add(student);
+    }
+
+    private static Student fillStudent() {
         String firstname;
         String lastname;
 
@@ -77,13 +89,26 @@ public class Main {
             firstname = read();
         }
 
-        students.add(new Student(lastname, firstname));
+        return new Student(lastname, firstname);
     }
 
     private static String read() {
         String result;
-        while ("".equals((result = scanner.nextLine())));
+        while ("".equals((result = scanner.nextLine().trim())));
 
         return result;
+    }
+
+    private static int getStudentByIndex() {
+        System.out.println("Quel étudiants (numéro) ?");
+        String givenId;
+        int id;
+
+        givenId = read();
+        while (!givenId.matches("^\\d+$") || (id = Integer.parseInt(givenId)) <= 0 || id > students.size()) {
+            System.out.println("Merci de saisir un nombre compris entre " + 1 + " et " + students.size());
+            givenId = read();
+        }
+        return id;
     }
 }
