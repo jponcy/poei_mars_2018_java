@@ -1,14 +1,13 @@
 
 package com.tactfactory.studentmanager;
 
-public class Student {
+public class Student extends Entity {
 
-    private Integer id;
+    private static final long serialVersionUID = 4325811621625740840L;
 
     private String lastname;
 
     private String firstname;
-
 
     public Student() {
     }
@@ -23,22 +22,6 @@ public class Student {
     @Override
     public String toString() {
         return this.firstname + " " + this.lastname;
-    }
-
-    /**
-     * @return
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * @param id
-     * @return
-     */
-    public Student setId(Integer id) {
-        this.id = id;
-        return this;
     }
     /** @return the lastname */
     public String getLastname() {

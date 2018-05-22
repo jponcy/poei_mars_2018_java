@@ -27,13 +27,15 @@
  * IV - Faire un CRUD pour des matières avec un nom ainsi qu'un coefficient entier.
  *
  *
- * V - Faire une classe permettant de gérer la boucle ainsi que les options, mais n'appelant que les méthodes définient
- *     dans deux autres classes (lier entre-elles par un héritage) pour l'execution de ces sous programme
- *     (ajout, modif., ....).
+ * V - Faire une classe permettant de gérer la boucle ainsi que les options,
+ *     mais n'appelant que la méthode définient dans deux autres classes
+ *     (process ; lier entre-elles par un héritage) pour l'execution de
+ *     ces sous programme (ajout, modif., ....).
  *
  *
- * VI - Nos repositories seront gérer dans une classe appelée EntityManager qui permettra de
- *      gérer/récupérer les instance unique de chaque repository par rapport à leur class.
+ * VI - Nos repositories seront gérer dans une classe appelée EntityManager
+ *      qui permettra de gérer/récupérer les instance unique de chaque repository
+ *      par rapport à leur class.
  *      Exemple d'utilisation => EntityManager.getRepository(StudentRepository.class).
  */
 package com.tactfactory.studentmanager;
